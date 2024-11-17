@@ -92,7 +92,7 @@ async def insert_statistics(db: Session):
                             "id": existing_item.id,
                             "volume": total_volume90,
                             "avg_price": round(avg_price90, 1),
-                            "rank": 10,
+                            "rank": 0,
                             "item_id": item.id
                         }
                         update_ninety_items.append(item_data)
@@ -100,7 +100,7 @@ async def insert_statistics(db: Session):
                         item_data = {
                             "volume": total_volume90,
                             "avg_price": round(avg_price90, 1),
-                            "rank": 10,
+                            "rank": 0,
                             "item_id": item.id
                         }
                         create_ninety_items.append(item_data)
