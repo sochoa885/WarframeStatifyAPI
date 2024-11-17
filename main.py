@@ -12,6 +12,10 @@ app.include_router(items.router)
 async def get_warframe_items():
     return "API ON"
 
+@app.head("/", description="", summary="")
+async def get_head():
+    return "Head!"
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
