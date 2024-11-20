@@ -4,6 +4,12 @@ from models.items import Items, FortyEightHours, NinetyDays
 def get_items(db: Session):
     return db.query(Items).all()
 
+def get_mods(db: Session):
+    return db.query(Items).filter(Items.type_id == 3).all()
+
+def get_arcanes(db: Session):
+    return db.query(Items).filter(Items.type_id == 2).all()
+
 def get_item_by_name(db: Session, name: str):
     return db.query(Items).filter(Items.name_en == name).first()
 

@@ -27,5 +27,5 @@ async def startup():
 
 def start_scheduler():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(lambda: asyncio.run(fetch_and_update_items()), 'interval', hours=8)
+    scheduler.add_job(lambda: asyncio.run(fetch_and_update_items()), 'interval', hours=12)
     scheduler.start()

@@ -147,8 +147,7 @@ async def fetch_and_update_items():
         except httpx.HTTPStatusError as e:
             print(f"HTTP error: {e.response.status_code} - {e.response.text}")
             return
-    test_items = response.json().get("data", {})
-    items = list(filter(lambda x: "mod" in x.get("tags", []), test_items))[:5]
+    items = list(response.json().get("data", {}))
     items_data = []
     for index, item in enumerate(items):
         i18n = item.get("i18n", {})
