@@ -5,7 +5,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 from config.warframe_data import fetch_and_update_items
 
-fetch_hours = 1
+fetch_hours = 11
 
 app = FastAPI(
     title="WarframeStatifyAPI",
