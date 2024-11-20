@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from crud.items import get_items, get_rank_0_forty_eight_hours_by_item_id, get_rank_0_ninety_days_by_item_id, get_rank_max_forty_eight_hours_by_item_id, get_rank_max_ninety_days_by_item_id, insert_many_forty_eight_hours, insert_many_items, get_item_by_name, insert_many_ninety_days, update_many_forty_eight_hours, update_many_ninety_days
 from database import SessionLocal
 
+interval_item_seconds = 2
 WARFRAME_API_URL_V2 = "https://api.warframe.market/v2/items"
 WARFRAME_API_URL_V1 = "https://api.warframe.market/v1/items"
 tags = {
@@ -28,7 +29,7 @@ async def insert_statistics(db: Session):
     update_ninety_items = []
     for item in items:
         async with httpx.AsyncClient() as client:
-            time.sleep(0.5)
+            time.sleep(interval_item_seconds)
             try:
                 response = await client.get(f"{WARFRAME_API_URL_V1}/{item.url_name}/statistics")
                 response.raise_for_status()

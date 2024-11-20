@@ -5,6 +5,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 from config.warframe_data import fetch_and_update_items
 
+fetch_hours = 10
+
 app = FastAPI(
     title="WarframeStatifyAPI",
     description="A tool that collects information from warframe.market",
@@ -27,5 +29,5 @@ async def startup():
 
 def start_scheduler():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(lambda: asyncio.run(fetch_and_update_items()), 'interval', hours=12)
+    scheduler.add_job(lambda: asyncio.run(fetch_and_update_items()), 'interval', hours=fetch_hours)
     scheduler.start()
