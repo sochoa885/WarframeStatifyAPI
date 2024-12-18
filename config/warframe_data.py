@@ -2,7 +2,7 @@ from functools import reduce
 import time
 import httpx
 from sqlalchemy.orm import Session
-from crud.items import get_items, get_rank_0_forty_eight_hours_by_item_id, get_rank_0_ninety_days_by_item_id, get_rank_max_forty_eight_hours_by_item_id, get_rank_max_ninety_days_by_item_id, insert_many_forty_eight_hours, insert_many_items, get_item_by_name, insert_many_ninety_days, update_many_forty_eight_hours, update_many_ninety_days
+from crud.items import get_items, get_rank_0_forty_eight_hours_by_item_id, get_rank_0_ninety_days_by_item_id, get_rank_max_forty_eight_hours_by_item_id, get_rank_max_ninety_days_by_item_id, insert_many_forty_eight_hours, insert_many_items, get_item_by_name, insert_many_ninety_days, update_many_forty_eight_hours, update_many_items, update_many_ninety_days
 from database import SessionLocal
 
 interval_item_seconds = 1
@@ -150,6 +150,7 @@ async def fetch_and_update_items():
             return
     items = list(response.json().get("data", {}))
     items_data = []
+    items_update = []
     for index, item in enumerate(items):
         i18n = item.get("i18n", {})
         name_en = i18n.get("en", {}).get("name", "Unknown Item")
@@ -158,20 +159,32 @@ async def fetch_and_update_items():
         url_name = item.get("urlName", "Unknown_Url")
         tag = next((tipo for clave, tipo in tags.items() if clave in item.get("tags", [])), 6)
         item_type = next((tipo for clave, tipo in types.items() if clave in item.get("tags", [])), 4)
-        item_data = {
-            "name_en": name_en,
-            "name_es": name_es,
-            "url_name": url_name,
-            "icon": icon,
-            "tag_id": tag,
-            "type_id": item_type
-        }
         existing_item = get_item_by_name(db, name_en)
         if not existing_item:
+            item_data = {
+                "name_en": name_en,
+                "name_es": name_es,
+                "url_name": url_name,
+                "icon": icon,
+                "tag_id": tag,
+                "type_id": item_type
+            }
             items_data.append(item_data)
+        else:
+            item_data = {
+                "id": existing_item.id,
+                "name_en": name_en,
+                "name_es": name_es,
+                "url_name": url_name,
+                "icon": icon,
+                "tag_id": tag,
+                "type_id": item_type
+            }
+            items_update.append(item_data)
         print(f"Loaded item: {index+1}/{len(items)}")
     try: 
         insert_many_items(db, items_data)
+        update_many_items(db, items_update)
     except ValueError as e:
         print("Error loading items ", e)
         raise

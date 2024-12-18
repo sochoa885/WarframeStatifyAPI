@@ -23,6 +23,11 @@ def insert_many_items(db: Session, items_data: list[dict]):
     db.bulk_insert_mappings(Items, items_data)
     db.commit()
     return True
+
+def update_many_items(db: Session, items_data: list[dict]):
+    db.bulk_update_mappings(Items, items_data)
+    db.commit()
+    return True
     
 def get_rank_0_forty_eight_hours_by_item_id(db: Session, item_id: int):
     return db.query(FortyEightHours).filter(FortyEightHours.item_id == item_id).filter(FortyEightHours.rank == 0).first()
