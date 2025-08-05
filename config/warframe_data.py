@@ -156,7 +156,7 @@ async def fetch_and_update_items():
         name_en = i18n.get("en", {}).get("name", "Unknown Item")
         name_es = i18n.get("es", {}).get("name", "Unknown Item")
         icon = i18n.get("en", {}).get("icon", "Unknown_Icon")
-        url_name = item.get("urlName", "Unknown_Url")
+        url_name = item.get("slug", "Unknown_Url")
         tag = next((tipo for clave, tipo in tags.items() if clave in item.get("tags", [])), 6)
         item_type = next((tipo for clave, tipo in types.items() if clave in item.get("tags", [])), 4)
         existing_item = get_item_by_name(db, name_en)
